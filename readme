@@ -1,0 +1,10 @@
+Script for jenkin to download and compile the android source
+
+Discriptions for the variables:
+initurl	 Where to get the source from
+branch	 What branch from to clone
+manifest What local_manifest file to get, which modifies what repositories are used. (Can be empty to not use a local_manifest)
+syncargs Command line arguments for repo sync
+LUNCH	 What device to compile for?
+joblvl	 What joblevel to run processes at
+makeargs Arguments to use in the make command
