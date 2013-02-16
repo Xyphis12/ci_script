@@ -19,6 +19,7 @@ if [ ! -z "$manifest" ]; then
   curl $manifest > ./.repo/local_manifest.xml
 fi
 repo sync $syncargs $joblvl
+. build/envsetup.sh
 lunch $LUNCH
 make $joblvl $makeargs
 cp $OUT/*.* $WORKSPACE/archive
