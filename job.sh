@@ -10,16 +10,45 @@ export BUILD_WITH_COLORS=0
  
 git config --global user.name 'name'
 git config --global user.email 'name@server.tld'
+
 mkdir -p ~/bin
 export PATH=~/bin:$PATH
 curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > ~/bin/repo
 chmod a+x ~/bin/repo
+
+export USE_CCACHE=1
+export CCACHE_NLEVELS=4
+export BUILD_WITH_COLORS=0
+# make sure ccache is in PATH
+if [[ "$REPO_BRANCH" =~ "jellybean" || "$REPO_BRANCH" =~ "cm-10" || "$REPO_BRANCH" =~ "cm-10.1" ]]
+then
+export PATH="$PATH:/opt/local/bin/:$PWD/prebuilts/misc/$(uname|awk '{print tolower($0)}')-x86/ccache"
+export CCACHE_DIR=~/.jb_ccache
+else
+export PATH="$PATH:/opt/local/bin/:$PWD/prebuilt/$(uname|awk '{print tolower($0)}')-x86/ccache"
+export CCACHE_DIR=~/.ics_ccache
+fi
+if [ ! "$(ccache -s|grep -E 'max cache size'|awk '{print $4}')" = "40.0" ]
+then
+  ccache -M 40G
+fi
+
+if [[ "$git_reset" =~ "y" ]]
+then
+echo cleaning repo...
+repo forall -c "git reset --hard"
+fi
+
 repo init -u $initurl -b $branch
 if [ ! -z "$manifest" ]; then
   curl $manifest > ./.repo/local_manifest.xml
 fi
+
 repo sync $syncargs $joblvl
+check_result "repo sync failed."
+
 . build/envsetup.sh
 lunch $LUNCH
 make $joblvl $makeargs
-cp $OUT/*.* $WORKSPACE/archive
+
+cp -rf $OUT/cm-*.zip* $WORKSPACE/archive
