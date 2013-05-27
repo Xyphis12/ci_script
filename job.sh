@@ -8,15 +8,17 @@ export CL_CYN="\"\033[36m\""
 export CL_RST="\"\033[0m\""
 export BUILD_WITH_COLORS=0
  
-git config --global user.name 'name'
-git config --global user.email 'name@server.tld'
+git config --global user.name "$username"
+git config --global user.email "$useremail"
 
 mkdir -p ~/bin
 export PATH=~/bin:$PATH
 curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > ~/bin/repo
 chmod a+x ~/bin/repo
 
-export USE_CCACHE=1
+export USE_CCACHE=$uccache
+if [["$uccache" = "1"]]
+then
 export CCACHE_NLEVELS=4
 export BUILD_WITH_COLORS=0
 # make sure ccache is in PATH
@@ -31,6 +33,7 @@ fi
 if [ ! "$(ccache -s|grep -E 'max cache size'|awk '{print $4}')" = "40.0" ]
 then
   ccache -M 40G
+fi
 fi
 
 if [[ "$git_reset" =~ "y" ]]

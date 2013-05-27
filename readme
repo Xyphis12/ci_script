@@ -8,3 +8,7 @@ syncargs Command line arguments for repo sync
 LUNCH	 What device to compile for?
 joblvl	 What joblevel to run processes at
 makeargs Arguments to use in the make command
+username Username for git
+usermail Email for git
+uccache  Use ccache or not (1 or 0)
+
