@@ -22,7 +22,7 @@ then
 export CCACHE_NLEVELS=4
 export BUILD_WITH_COLORS=0
 # make sure ccache is in PATH
-if [[ "$REPO_BRANCH" =~ "jellybean" || "$REPO_BRANCH" =~ "cm-10" || "$REPO_BRANCH" =~ "cm-10.1" ]]
+if [[ "$REPO_BRANCH" =~ "jellybean" || "$REPO_BRANCH" =~ "cm-10" || "$REPO_BRANCH" =~ "cm-10.1" || "$REPO_BRANCH" =~ "cm-10.2" || "$REPO_BRANCH" =~ "cm-10.3"]]
 then
 export PATH="$PATH:/opt/local/bin/:$PWD/prebuilts/misc/$(uname|awk '{print tolower($0)}')-x86/ccache"
 export CCACHE_DIR=~/.jb_ccache
